@@ -1,0 +1,12 @@
+#root {
+  margin: 0 auto;
+  padding: 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 768px) {
+  #root {
+    padding: 0;
+  }
+}
