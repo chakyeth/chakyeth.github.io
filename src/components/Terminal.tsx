@@ -116,7 +116,7 @@ const Terminal = () => {
       if (currentDir === Object.keys(dirTree)[0] || currentDir === Object.keys(dirTree)[3]){
         return `There are no files available to open.`
       } else if (currentDir === Object.keys(dirTree)[1]) {
-        return `i didn't upload my resume yet because i'm shy. please hire me.`
+        return `available for hire. email me at chak.yeth@gmail.com for my resume. 🙏`
       }
 
       if (dirTree[currentDir]?.includes(file)) {
