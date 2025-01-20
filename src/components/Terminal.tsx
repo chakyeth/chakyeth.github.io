@@ -3,10 +3,11 @@ import '../App.css';
 
 const Terminal = () => {
   const dirTree: Record<string, string[]> = {
-    home: ['pets', 'hobbies', 'resume'],
+    home: ['pets/', 'hobbies/', 'resume/', 'skills/'],
     resume: ['chakyeth_resume.pdf'],
     pets: ['fish.jpg', 'egg.jpg', 'fosters1.jpg', 'fosters2.jpg', 'fosters3.jpg'],
-    hobbies: ['snowboarding', 'motorcycles', 'coding', 'learning']
+    hobbies: ['snowboarding', 'motorcycles', 'cars', 'coding', 'learning', 'fostering'],
+    skills: ['python', 'rust', 'javascript', 'typescript', 'sql', 'ci/cd', 'aws', 'kubernetes', 'docker', 'restoring vintage motorcycles', 'snowboarding poorly and injuring myself']
   }
 
   const [input, setInput] = useState('');
@@ -68,12 +69,15 @@ const Terminal = () => {
         case Object.keys(dirTree)[3]:
           listDir = dirTree.hobbies;
           break;
+        case Object.keys(dirTree)[4]:
+          listDir = dirTree.skills;
+          break;
         default:
           listDir = [];
           break;
       }
 
-      return listDir.map((item) => item).join('  ');
+      return listDir.map((item) => item).join('   ');
     },
     clear: () => {
       setOutput([]);
@@ -98,6 +102,10 @@ const Terminal = () => {
           case 'hobbies/':
             setCurrentDir(Object.keys(dirTree)[3]);
             return 'Changed to hobbies directory';
+          case 'skills':
+          case 'skills/':
+            setCurrentDir(Object.keys(dirTree)[4]);
+            return 'Changed to skills directory';
           default:
             return 'No such directory';
         }
@@ -113,10 +121,10 @@ const Terminal = () => {
       }
     },
     open: (file: string) => {
-      if (currentDir === Object.keys(dirTree)[0] || currentDir === Object.keys(dirTree)[3]){
+      if (currentDir === Object.keys(dirTree)[0] || currentDir === Object.keys(dirTree)[3] || currentDir === Object.keys(dirTree)[4]) {
         return `There are no files available to open.`
       } else if (currentDir === Object.keys(dirTree)[1]) {
-        return `available for hire. email me at chak.yeth@gmail.com for my resume. 🙏`
+        return `\navailable for hire. email me at chak.yeth@gmail.com for my resume. 🙏`
       }
 
       if (dirTree[currentDir]?.includes(file)) {
@@ -148,9 +156,9 @@ const Terminal = () => {
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
-  
+
     const [command, ...args] = input.trim().split(' ');
-  
+
     if (command === 'clear') {
       commands.clear();
     } else {
@@ -158,10 +166,10 @@ const Terminal = () => {
         command in commands
           ? await (commands[command as keyof Commands] as (...args: string[]) => Promise<string>)(...args)
           : 'Command not found';
-  
+
       setOutput((prev) => [...prev, [`$ ${input}`, result]]);
     }
-  
+
     setInput('');
   };
 
@@ -169,11 +177,11 @@ const Terminal = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  
+
     if (outputRef.current) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
-  
+
     if (textMeasureRef.current) {
       const textWidth = input
         ? textMeasureRef.current.offsetWidth + 10
